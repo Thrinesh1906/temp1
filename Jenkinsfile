@@ -6,7 +6,6 @@ pipeline {
     }
 
     stages {
-
         stage('CHECKOUT') {
             steps {
                 git 'https://github.com/Thrinesh1906/temp.git'
@@ -32,10 +31,16 @@ pipeline {
 
     post {
         success {
-            echo 'Build Successful'
+            slackSend message: "✅ Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+            mail to: 'your-email@gmail.com',
+                 subject: "Build SUCCESS",
+                 body: "Build completed successfully"
         }
         failure {
-            echo 'Build Failed'
+            slackSend message: "❌ Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+            mail to: 'your-email@gmail.com',
+                 subject: "Build FAILED",
+                 body: "Build failed"
         }
     }
 }
